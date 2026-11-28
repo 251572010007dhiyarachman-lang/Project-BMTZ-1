@@ -1,186 +1,131 @@
-# FUNCTIONAL REQUIREMENT
+# BAITULMAL TAZKIA
+## SISTEM DONASI BERULANG DAN KANAL PEMBAYARAN DIGITAL
 
-## FR-014 — MEMBUAT TAUTAN PEMBAYARAN SATU KALI
+### FUNCTIONAL REQUIREMENT (FR)
+# FR-014: MEMBUAT TAUTAN PEMBAYARAN SATU KALI
 
-**Sistem Donasi Berulang dan Kanal Pembayaran Digital**
+**Versi:** 1.0 | **Status:** Draft untuk Review dan Validasi Klien | **Tanggal:** 25 November 2026  
+**Acuan:** SRS dan BRS Fitur 4 versi 1.0, tanggal acuan 14 November 2026.
 
-### Riwayat dan Status Dokumen
+---
 
-| Atribut | Keterangan |
+## A. Identitas Kebutuhan
+
+| Informasi | Keterangan |
 | :--- | :--- |
-| **ID / Nama** | FR-014 — Membuat Tautan Pembayaran Satu Kali |
-| **Versi sumber** | Draft Awal v0.1 |
-| **Versi dokumen** | 1.0 |
-| **Acuan** | SRS Draft v0.2, tanggal 26 Oktober 2026 |
-| **Status** | Rumusan dan struktur kebutuhan telah difinalisasi berdasarkan materi yang tersedia. Detail bisnis dan integrasi yang belum tersedia tetap ditandai perlu konfirmasi. |
+| **ID Kebutuhan** | FR-014 |
+| **Nama Kebutuhan** | Membuat Tautan Pembayaran Satu Kali |
+| **Aktor Utama** | Donatur dan/atau staf internal yang diberi kewenangan; sistem; Payment Gateway. |
+| **Tujuan** | Menyediakan pembuatan tautan pembayaran satu kali apabila fungsi tersebut disetujui BMT dan didukung oleh Payment Gateway. |
+| **Pemicu** | Donatur atau staf yang berwenang memulai kebutuhan pembayaran satu kali untuk donasi. |
+| **Kondisi Awal** | Fungsi tautan pembayaran satu kali telah disetujui; nominal dan informasi donasi tersedia; integrasi gateway mendukung pembuatan tautan. |
+| **Prioritas Usulan** | Could Have — usulan, perlu persetujuan Baitulmal Tazkia. |
+| **Tingkat Kesulitan Usulan** | 4 — Hard |
+| **Status** | Draft untuk review dan validasi; belum menjadi baseline implementasi. |
 
-> *Catatan: “Final” pada dokumen ini berarti finalisasi dokumen kebutuhan berdasarkan sumber yang diberikan, bukan pernyataan bahwa seluruh aturan bisnis atau kontrak teknis telah disetujui klien.*
+---
 
-### 1. Identitas Kebutuhan
+## B. Deskripsi Functional Requirement
 
-| Elemen | Uraian |
-| :--- | :--- |
-| **ID kebutuhan** | FR-014 |
-| **Nama** | Membuat Tautan Pembayaran Satu Kali |
-| **Aktor utama** | Penggalang dana atau staf yang berwenang; sistem; Payment Gateway Artivisi |
-| **Pihak terkait** | Donatur sebagai penerima dan pengguna tautan pembayaran |
-| **Tujuan** | Membuat tautan pembayaran satu kali melalui gateway untuk dibagikan dan, jika didukung, dipantau progresnya. |
-| **Prioritas** | Belum ditentukan dalam SRS. |
-| **Pemicu** | Penggalang dana atau staf yang berwenang meminta tautan pembayaran satu kali. |
-| **Kondisi awal** | Pihak peminta berwenang dan aturan tautan sudah ditentukan. |
+FR-014 menjelaskan kemampuan sistem menyediakan tautan pembayaran satu kali untuk suatu donasi. Sistem menyiapkan permintaan pembuatan tautan berdasarkan informasi donasi yang tersedia dan meneruskannya ke Payment Gateway apabila layanan tersebut mendukung. Tautan yang diterima ditampilkan atau disampaikan kepada pihak yang ditentukan. SRS secara eksplisit menyatakan fungsi ini bersyarat: digunakan hanya apabila disetujui dan didukung gateway. Cara pembuatan, masa berlaku, penerima tautan, dan metode pembayaran belum ditetapkan.
 
-### 2. Deskripsi Kebutuhan Fungsional
+### 1. Format Outline dan Batasan
+* Sistem menerima permintaan pembuatan tautan pembayaran satu kali dari aktor yang berwenang.
+* Sistem memeriksa kelengkapan informasi donasi yang diperlukan.
+* Sistem mengirim permintaan pembuatan tautan ke Payment Gateway melalui mekanisme yang disepakati.
+* Sistem menerima respons gateway dan menyimpan referensi serta tautan jika berhasil dibuat.
+* Sistem menampilkan atau menyediakan tautan kepada penerima yang ditentukan.
+* Pembayaran melalui tautan tetap harus diverifikasi melalui FR-007; pembuatan tautan tidak berarti pembayaran berhasil.
 
-Sistem harus menyediakan fungsi bagi penggalang dana atau staf yang berwenang untuk meminta pembuatan tautan pembayaran satu kali. Sistem membuat atau meminta tautan melalui Payment Gateway Artivisi sesuai mekanisme integrasi yang disepakati, kemudian mengembalikan tautan yang valid agar dapat dibagikan kepada donatur.
+### 2. Proses Bisnis
 
-Tautan harus dapat digunakan sesuai masa berlakunya. Apabila gateway mendukung fasilitas pemantauan, sistem dapat menampilkan progres atau status tautan. Jika gateway gagal membuat tautan, sistem harus menampilkan informasi kegagalan dan tidak mengembalikan tautan yang tidak valid.
+| Tahap | Aktivitas | Dasar / Catatan |
+| :---: | :--- | :--- |
+| **1** | Aktor memulai permintaan tautan pembayaran satu kali. | Fungsi bersyarat pada SRS FR-014. |
+| **2** | Sistem memeriksa nominal dan informasi donasi yang diperlukan. | Field wajib dan aturan nominal perlu konfirmasi. |
+| **3** | Sistem mengirim permintaan ke Payment Gateway. | Bergantung pada dukungan gateway dan kontrak integrasi. |
+| **4** | Gateway mengembalikan tautan dan referensi atau respons gagal. | Format respons/API perlu konfirmasi. |
+| **5** | Sistem menyimpan referensi tautan dan menyediakan tautan kepada penerima. | Penerima dan kanal penyampaian perlu konfirmasi. |
 
-Pembayaran melalui tautan tetap mengikuti proses verifikasi transaksi. Sistem tidak boleh menyatakan pembayaran berhasil sebelum menerima hasil yang terverifikasi sesuai FR-007 dan NFR-002.
+> **Alur Alternatif:** Jika fungsi belum disetujui atau gateway tidak mendukung pembuatan tautan, sistem tidak menampilkan opsi yang tidak tersedia. Jika gateway gagal atau tidak mengembalikan tautan yang valid, sistem mencatat kegagalan dan tidak menampilkan tautan seolah-olah berhasil dibuat. Jika pembayaran dilakukan melalui tautan, statusnya tetap menunggu verifikasi sesuai FR-007.
 
-### 3. Ruang Lingkup dan Batasan
+### 3. Field, Tipe Data, dan Validasi
 
-**Termasuk dalam ruang lingkup:**
-* Menerima permintaan pembuatan tautan dari pihak yang berwenang.
-* Memastikan prasyarat kewenangan dan aturan tautan telah ditentukan.
-* Membuat atau meminta tautan melalui Payment Gateway Artivisi.
-* Mengembalikan tautan pembayaran yang valid untuk dibagikan kepada donatur.
-* Menyediakan pemantauan progres apabila fitur tersebut didukung gateway.
-* Menangani kegagalan pembuatan tautan agar tautan tidak valid tidak dibagikan.
-
-**Di luar ruang lingkup:**
-* Pemrosesan pembayaran dilakukan oleh Payment Gateway Artivisi.
-* Verifikasi status transaksi mengikuti FR-007.
-* Pengiriman catatan donasi ke kelompok 1 mengikuti FR-009.
-* Pencegahan pencatatan ganda mengikuti FR-015.
-* Pendaftaran, jeda, dan pembatalan donasi berulang tidak dibahas dalam FR-014.
-
-### 4. Alur Proses Bisnis
-
-| No. | Langkah | Dasar |
-| :--- | :--- | :--- |
-| 1 | Penggalang dana atau staf yang berwenang meminta tautan pembayaran satu kali. | Tertulis di SRS |
-| 2 | Sistem memastikan pihak peminta berwenang dan aturan tautan telah ditentukan. | Disimpulkan dari kondisi awal SRS |
-| 3 | Sistem membuat atau meminta tautan melalui gateway sesuai integrasi. | Tertulis di SRS |
-| 4 | Sistem mengembalikan tautan yang valid untuk dibagikan. | Tertulis di SRS |
-| 5 | Sistem menyediakan pemantauan progres tautan apabila fitur didukung. | Tertulis di SRS sebagai kriteria penerimaan |
-| 6 | Pembayaran melalui tautan hanya dinyatakan berhasil setelah hasilnya terverifikasi. | Disimpulkan dari SRS Bab 2.1, NFR-002, dan FR-007 |
-
-#### 4.1 Alur Alternatif
-
-| Kondisi | Perilaku Sistem | Hal yang Perlu Dikonfirmasi |
-| :--- | :--- | :--- |
-| **Gateway gagal membuat tautan** | Sistem menampilkan kegagalan dan tidak mengembalikan tautan yang tidak valid. | Aturan pengulangan permintaan, jumlah percobaan, dan pesan kegagalan. |
-| **Peminta tidak berwenang** | Sistem tidak membuat tautan. | Mekanisme verifikasi identitas dan kewenangan. |
-| **Tautan kedaluwarsa atau sudah digunakan** | Tautan hanya dapat digunakan sesuai masa berlaku. | Definisi “satu kali” dan perlakuan setelah tautan digunakan/kedaluwarsa. |
-| **Status pembayaran pending, timeout, atau belum diterima** | Sistem tidak menyatakan berhasil atau gagal tanpa dasar hasil terverifikasi. | Pemetaan status gateway, waktu tunggu, dan mekanisme pengecekan. |
-| **Hasil gateway diterima lebih dari sekali** | Referensi transaksi unik digunakan untuk mencegah pencatatan ganda sesuai FR-015. | Detail teknis idempotensi dan kontrak integrasi. |
-
-### 5. Data dan Validasi
-
-*SRS Draft v0.2 belum menetapkan nama field, tipe data, maupun aturan validasi terperinci untuk FR-014. Daftar berikut merupakan kebutuhan data konseptual untuk dikonfirmasi, bukan rancangan skema basis data final.*
-
-| Data Konseptual | Tipe Data | Aturan Awal | Status |
+| Field / Informasi | Tipe / Bentuk | Validasi / Aturan Awal | Status |
 | :--- | :--- | :--- | :--- |
-| **Pihak peminta** | Belum ditentukan | Hanya penggalang dana atau staf berwenang. | Konfirmasi identitas dan verifikasi kewenangan. |
-| **Nominal** | Belum ditentukan | Belum ditetapkan apakah nominal tetap atau bebas. | Perlu konfirmasi. |
-| **Peruntukan/program** | Belum ditentukan | Keterkaitan tautan dengan program belum dijelaskan. | Konfirmasi apakah wajib. |
-| **Masa berlaku** | Belum ditentukan | Tautan digunakan sesuai masa berlaku. | Konfirmasi durasi dan aturan kedaluwarsa. |
-| **Tautan pembayaran** | Belum ditentukan | Tautan yang dikembalikan harus valid. | Konfirmasi format dan respons gateway. |
-| **Referensi tautan/transaksi** | Belum ditentukan | Memungkinkan pencocokan dengan gateway dan pencegahan duplikasi. | Konfirmasi format dan keunikan. |
-| **Status/progres** | Belum ditentukan | Dapat dipantau apabila fitur didukung. | Konfirmasi daftar status dan mekanisme. |
-| **Catatan kegagalan** | Belum ditentukan | Kegagalan ditampilkan dan tidak menghasilkan tautan. | Konfirmasi isi dan penyimpanan log. |
+| **Nominal donasi** | Nilai mata uang | Harus valid sesuai aturan nominal yang disepakati. | Aturan rinci perlu konfirmasi. |
+| **Identitas/program donasi** | ID atau referensi | Menghubungkan tautan dengan donasi/program yang benar. | Format referensi perlu konfirmasi. |
+| **Referensi gateway** | String/ID | Disimpan untuk penelusuran transaksi/tautan. | Bergantung respons gateway. |
+| **URL tautan pembayaran** | URL | Hanya disediakan jika diterima dan dinyatakan valid oleh gateway. | Dukungan gateway perlu konfirmasi. |
+| **Masa berlaku tautan** | Tanggal/waktu atau durasi | Belum ditetapkan; mengikuti dukungan gateway dan keputusan BMT. | Perlu konfirmasi. |
+| **Status tautan** | Status | Misalnya dibuat, gagal, kedaluwarsa, atau digunakan; daftar final perlu disepakati. | Perlu konfirmasi. |
 
-### 6. Rancangan Antarmuka Konseptual
+### 4. Mockup Konseptual
 
-*Mockup berikut menggambarkan kebutuhan interaksi, bukan desain final. Tampilan halaman pembayaran yang dibuka donatur mungkin disediakan oleh gateway.*
+```text
++-------------------------------------------------------+
+| BUAT TAUTAN PEMBAYARAN SATU KALI                      |
++-------------------------------------------------------+
+| Informasi donasi : [ program / keterangan           ] |
+| Nominal          : [ nominal                        ] |
+|                                                       |
+|                  [ BUAT TAUTAN ]                      |
+|                                                       |
+| Tautan pembayaran: [ URL dari gateway               ] |
+| Status           : [ berhasil dibuat / gagal /      ] |
+|                    [ kedaluwarsa                    ] |
++-------------------------------------------------------+
+```
+*Catatan: Mockup ini konseptual, bukan desain UI final. Arahan visual SRS NFR-006 adalah navy blue dan putih.*
 
-#### 6.1 Form Permintaan Tautan
+### 5. Non-Functional Requirement Terkait
 
-| Elemen | Keterangan |
-| :--- | :--- |
-| **Identitas** | Identitas Baitulmal Tazkia. |
-| **Judul** | Buat Tautan Pembayaran Satu Kali. |
-| **Nominal** | Aturan nominal tetap atau bebas perlu dikonfirmasi. |
-| **Peruntukan/program** | Ditampilkan apabila diwajibkan oleh aturan bisnis. |
-| **Masa berlaku** | Ditentukan berdasarkan aturan yang disepakati. |
-| **Aksi** | Tombol “Buat tautan”. |
-
-#### 6.2 Hasil Berhasil
-
-| Elemen | Keterangan |
-| :--- | :--- |
-| **Status** | Tautan pembayaran siap dibagikan. |
-| **Tautan** | Tautan pembayaran yang diterima dari gateway. |
-| **Berlaku sampai** | Waktu kedaluwarsa berdasarkan aturan/response gateway. |
-| **Aksi** | Bagikan atau salin tautan. |
-| **Progres** | Status tautan apabila fitur pemantauan didukung. |
-
-#### 6.3 Hasil Gagal
-
-| Elemen | Keterangan |
-| :--- | :--- |
-| **Status** | Tautan gagal dibuat. |
-| **Pesan** | Informasi kegagalan sesuai hasil gateway dan redaksi yang disetujui. |
-| **Aturan tampilan** | Tidak ada tautan pembayaran yang ditampilkan. |
-
-> *Arahan visual awal pada SRS NFR-006 adalah navy blue dan putih, sejauh tampilan berada dalam kendali subsistem ini.*
-
-### 7. Non-Functional Requirement Terkait
-
-| Aspek | Kebutuhan Terkait | Acuan / Catatan |
+| Aspek | Kebutuhan Terkait | Catatan |
 | :--- | :--- | :--- |
-| **Keamanan** | Hanya pihak berwenang dapat membuat tautan. Data donatur/transaksi dilindungi; data pembayaran sensitif tidak disimpan tanpa dasar dan aturan yang disepakati. | NFR-001; SRS Bab 2.3; OQ-013. |
-| **Keandalan status** | Tautan tidak valid tidak dikembalikan. Pembayaran tidak dinyatakan berhasil tanpa hasil terverifikasi. | NFR-002; FR-007. |
-| **Integrasi** | Pembuatan dan pemantauan tautan mengikuti kontrak gateway. | Field, token, autentikasi, callback/webhook, timeout, dan retry perlu dikonfirmasi. |
-| **Keterlacakan** | Referensi tautan/transaksi memungkinkan pencocokan subsistem, gateway, penerimaan donasi, dan rekonsiliasi. | NFR-005; format referensi perlu disepakati. |
-| **Kemudahan penggunaan** | Tautan mudah dibagikan; instruksi kepada donatur jelas dan mudah dipahami. | NFR-004; kriteria uji perlu dikonfirmasi. |
-| **Kinerja** | Tautan dibuat dalam waktu yang wajar setelah diminta. | Target waktu respons dan volume belum ditetapkan; OQ-014. |
+| **Keamanan** | Permintaan dan tautan hanya dapat diakses pihak berwenang. | Mengacu NFR-001. |
+| **Integrasi** | Pembuatan tautan mengikuti API/mekanisme gateway yang disepakati. | Mengacu NFR-003; kemampuan gateway perlu validasi. |
+| **Keandalan** | Tautan hanya ditampilkan jika respons pembuatan dinyatakan berhasil. | Mengacu NFR-002 sebagai prinsip status transaksi; status tautan perlu aturan. |
+| **Konsistensi Data** | Tautan memiliki referensi yang dapat ditelusuri ke donasi/transaksi. | Mengacu NFR-005. |
+| **Pemulihan Kegagalan** | Kegagalan pembuatan tautan dapat ditelusuri dan tidak menghasilkan catatan ganda. | Mengacu NFR-007. |
 
-### 8. Kriteria Penerimaan
+### 6. Kriteria Penerimaan
+- [ ] Fungsi tautan pembayaran satu kali hanya diaktifkan setelah disetujui BMT dan dukungan gateway dipastikan.
+- [ ] Sistem memeriksa informasi donasi yang diwajibkan sebelum mengirim permintaan.
+- [ ] Jika gateway berhasil membuat tautan, sistem menyimpan referensi dan menyediakan tautan yang valid.
+- [ ] Jika gateway gagal, sistem menampilkan informasi kegagalan dan tidak membuat tautan palsu.
+- [ ] Pembayaran dari tautan tidak langsung dianggap berhasil sebelum diverifikasi melalui FR-007.
 
-* [ ] Pihak yang berwenang dapat mengajukan permintaan pembuatan tautan pembayaran satu kali.
-* [ ] Sistem membuat atau meminta tautan melalui Payment Gateway Artivisi sesuai integrasi yang disepakati.
-* [ ] Jika pembuatan berhasil, sistem mengembalikan tautan yang valid untuk dibagikan.
-* [ ] Tautan dapat digunakan sesuai masa berlaku yang ditetapkan.
-* [ ] Progres tautan dapat dipantau apabila fitur pemantauan didukung gateway.
-* [ ] Jika gateway gagal membuat tautan, sistem menampilkan kegagalan dan tidak mengembalikan tautan yang tidak valid.
-* [ ] Pihak yang tidak berwenang tidak dapat membuat tautan.
-* [ ] Status pembayaran melalui tautan hanya dinyatakan berhasil berdasarkan hasil yang terverifikasi.
-* [ ] Hasil gateway yang diterima lebih dari sekali tidak menyebabkan pencatatan transaksi ganda; mekanismenya mengikuti FR-015.
+### 7. Prioritas dan Tingkat Kesulitan
 
-> *Kriteria yang bergantung pada aturan bisnis atau kemampuan gateway baru dapat diuji secara terukur setelah detail tersebut dikonfirmasi.*
+| Komponen | Usulan | Dasar |
+| :--- | :--- | :--- |
+| **Prioritas MoSCoW** | Could Have — usulan, perlu persetujuan Baitulmal Tazkia. | Usulan analisis berdasarkan tujuan dan kebutuhan pada SRS; perlu persetujuan BMT. |
+| **Tingkat Kesulitan** | 4 — Hard | FR-014 diusulkan pada tingkat 4 (Hard) karena bergantung pada kemampuan dan kontrak Payment Gateway, pembuatan referensi/URL, pengelolaan masa berlaku, serta keterkaitan tautan dengan proses verifikasi pembayaran. Prioritas *Could Have* merupakan usulan karena SRS menyatakan fungsi ini bersyarat pada persetujuan dan dukungan gateway, bukan fungsi inti yang dipastikan tersedia. |
 
-### 9. Hal yang Perlu Dikonfirmasi
+### 8. Dasar Pertimbangan Penilaian
+Skala kesulitan 1–5: **1–2 Easy**, **3 Medium**, dan **4–5 Hard**. FR-014 diusulkan pada tingkat **4 (Hard)** karena bergantung pada kemampuan dan kontrak Payment Gateway, pembuatan referensi/URL, pengelolaan masa berlaku, serta keterkaitan tautan dengan proses verifikasi pembayaran. Prioritas *Could Have* merupakan usulan karena SRS menyatakan fungsi ini bersyarat pada persetujuan dan dukungan gateway, bukan fungsi inti yang dipastikan tersedia. Penilaian prioritas dan kesulitan merupakan usulan, bukan keputusan final klien.
 
-1. Siapa yang termasuk “penggalang dana atau staf yang berwenang”, dan bagaimana kewenangannya diverifikasi?
-2. Apa aturan tautan: nominal tetap atau bebas, masa berlaku, dan apakah terkait program/peruntukan tertentu?
-3. Apa definisi “satu kali”: tautan hanya dapat dipakai sekali atau menghasilkan satu transaksi? Bagaimana perlakuan tautan yang sudah dipakai atau kedaluwarsa?
-4. Metode pembayaran apa yang tersedia melalui tautan (transfer, virtual account, e-wallet), dan kapan masing-masing dinyatakan didukung? (SRS Bab 2.4, OQ-002)
-5. Apa saja status yang dipantau, bagaimana mekanismenya (callback/webhook atau pengecekan), dan siapa yang dapat melihatnya? (SRS OQ-005)
-6. Data donatur apa yang dikumpulkan saat membayar melalui tautan, dan apakah donatur perlu akun?
-7. Apakah hasil pembayaran diteruskan ke kelompok 1 (FR-009), tanda terima (FR-008), serta rekonsiliasi dan pelaporan (FR-010) dengan alur yang sama seperti donasi berulang?
-8. Bagaimana status pending, timeout, atau hasil gateway yang diterima lebih dari sekali ditangani? (SRS OQ-005, ALT-08, FR-015)
-9. Apakah tautan juga dipakai untuk pembayaran manual pada donasi berulang? (SRS FR-006, OQ-001)
-10. Apakah permintaan pembuatan tautan yang gagal dapat dicoba ulang, berapa batas percobaannya, dan pesan apa yang ditampilkan?
-11. Bagaimana aturan akses, retensi, kepemilikan data, target waktu respons, dan volume transaksi? (SRS OQ-013, OQ-014)
+### 9. Hal yang Perlu Dikonfirmasi kepada Klien / Tim Teknis
+1. Apakah BMT benar-benar membutuhkan tautan pembayaran satu kali? Jika tidak, FR-014 dapat dinyatakan tidak digunakan.
+2. Apakah Payment Gateway Artivisi mendukung pembuatan tautan pembayaran satu kali melalui API atau dashboard?
+3. Siapa yang boleh membuat tautan: donatur, staf internal, atau keduanya?
+4. Informasi apa yang wajib dimasukkan saat membuat tautan (nominal, program, peruntukan, identitas donatur, keterangan)?
+5. Apakah tautan dibuat untuk nominal tetap atau donatur dapat mengubah nominal saat membuka tautan?
+6. Berapa lama masa berlaku tautan dan apakah tautan dapat diperpanjang atau dibuat ulang?
+7. Bagaimana tautan disampaikan kepada penerima: ditampilkan di sistem, dikirim melalui kanal komunikasi, atau disalin manual?
+8. Metode pembayaran apa saja yang tersedia melalui tautan tersebut?
+9. Bagaimana status tautan (dibuat, digunakan, kedaluwarsa, dibatalkan) diperoleh dan diperbarui?
+10. Apakah transaksi dari tautan satu kali juga masuk ke FR-008, FR-009, FR-010, FR-013, dan mekanisme pencegahan transaksi ganda FR-015?
+11. Bagaimana sistem menghubungkan pembayaran dari tautan dengan referensi transaksi yang diverifikasi FR-007?
 
-### 10. Ketergantungan dan Relasi dengan FR Lain
+### 10. Checklist Konfirmasi Client
 
-| Acuan | Hubungan |
-| :--- | :--- |
-| **Payment Gateway Artivisi (SRS Bab 2.3)** | Penyedia layanan pembuatan tautan dan pemrosesan pembayaran; kontrak integrasi perlu disepakati. |
-| **FR-007** | Acuan verifikasi status transaksi; FR-014 tidak menetapkan sendiri keberhasilan pembayaran. |
-| **FR-009** | Acuan pengiriman catatan donasi ke kelompok 1 setelah alur transaksi terpenuhi. |
-| **FR-015** | Acuan pencegahan pencatatan ganda untuk hasil gateway yang diterima lebih dari sekali. |
-| **FR-008 dan FR-010** | Perlu dikonfirmasi bagaimana transaksi dari tautan terhubung dengan tanda terima, rekonsiliasi, dan pelaporan. |
-| **FR-006** | Perlu dikonfirmasi apakah tautan satu kali juga digunakan untuk pembayaran manual pada donasi berulang. |
+| ID & Nama Kebutuhan | Prioritas Usulan | Kesulitan Usulan | Tidak Dibutuhkan / Catatan Client |
+| :--- | :--- | :--- | :--- |
+| **FR-014 — Membuat Tautan Pembayaran Satu Kali** | Could Have — usulan, perlu persetujuan Baitulmal Tazkia. | 4 — Hard | |
 
-### 11. Ringkasan
+*Catatan: Isi kolom terakhir apabila kebutuhan tidak diperlukan atau terdapat catatan/perubahan dari klien. Biarkan kosong jika kebutuhan tetap diperlukan.*
 
-* FR-014 memungkinkan penggalang dana atau staf yang berwenang membuat tautan pembayaran satu kali melalui Payment Gateway Artivisi. Sistem mengembalikan tautan valid untuk dibagikan dan menyediakan pemantauan progres apabila didukung. Jika gateway gagal membuat tautan, sistem menampilkan kegagalan dan tidak mengembalikan tautan yang tidak valid. Status pembayaran tetap harus diverifikasi sesuai FR-007.
-* Kebutuhan inti tersedia dalam SRS Draft v0.2, tetapi aturan nominal, masa berlaku, definisi satu kali, status pemantauan, metode pembayaran, dan kontrak teknis gateway belum ditetapkan. Hal-hal tersebut dipertahankan sebagai butir konfirmasi dan tidak diasumsikan sebagai keputusan final.
-
-### 12. Referensi
-
-* FR-014 — Membuat Tautan Pembayaran Satu Kali, Draft Awal v0.1 (5 halaman).
-* SRS Draft v0.2, tanggal acuan 26 Oktober 2026: Bab 1.2, Bab 2.1, Bab 2.3, Bab 2.4, Bab 3.2 (ALT-02 dan ALT-08), Bab 4 (FR-014), Bab 6, FR-007, FR-008, FR-009, FR-010, FR-015, NFR-001, NFR-002, NFR-004, NFR-005, NFR-006, OQ-002, OQ-005, OQ-013, dan OQ-014.
+### 11. Catatan dan Status Dokumen
+FR-014 bersifat kondisional sesuai SRS: tautan pembayaran satu kali hanya disediakan jika disetujui dan didukung Payment Gateway. FR-014 mencakup pembuatan dan penyediaan tautan, bukan verifikasi pembayaran. Pembayaran melalui tautan tetap mengikuti FR-007. Detail gateway, aktor, masa berlaku, nominal, dan kanal penyampaian belum ditetapkan.  
+**Status:** Draft untuk Review dan Validasi Klien.

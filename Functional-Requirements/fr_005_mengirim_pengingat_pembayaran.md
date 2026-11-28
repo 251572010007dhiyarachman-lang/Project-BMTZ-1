@@ -1,161 +1,146 @@
-# FUNCTIONAL REQUIREMENT
+# BAITULMAL TAZKIA
+## SISTEM DONASI BERULANG DAN KANAL PEMBAYARAN DIGITAL
 
-## FR-005 — Mengirim Pengingat Pembayaran
+### FUNCTIONAL REQUIREMENT (FR)
+# FR-005: MENGIRIM PENGINGAT PEMBAYARAN
 
-**Sistem Donasi Berulang dan Kanal Pembayaran Digital | Baitulmal Tazkia**
+**Versi:** 1.0 | **Status:** Draft untuk Review dan Validasi Klien | **Tanggal:** 25 November 2026  
+**Acuan:** SRS dan BRS Fitur 4 versi 1.0, tanggal acuan 14 November 2026.
 
-### A. Identitas Kebutuhan
+---
 
-| Elemen | Keterangan |
+## A. Identitas Kebutuhan
+
+| Informasi | Keterangan |
 | :--- | :--- |
 | **ID Kebutuhan** | FR-005 |
 | **Nama Kebutuhan** | Mengirim Pengingat Pembayaran |
 | **Aktor Utama** | Sistem; donatur sebagai penerima pengingat. |
-| **Tujuan** | Mengirim pengingat kepada donatur sesuai jadwal dan kanal yang disepakati untuk pembayaran donasi berulang secara manual, serta mencatat hasil pengirimannya. |
-| **Prioritas** | Belum ditentukan. |
-| **Status** | Draft untuk presentasi; belum menjadi persyaratan final klien. Hubungan pengingat dengan penagihan otomatis (autodebit), waktu, frekuensi, dan kanal masih perlu klarifikasi. |
-| **Acuan** | FR-005 versi 0.1 Draft Awal dan SRS Draft v0.2 (tanggal acuan 26 Oktober 2026). |
+| **Tujuan** | Menyediakan pengiriman pengingat pembayaran donasi berulang kepada donatur sesuai jadwal dan kanal yang disetujui, serta mencatat hasil pengirimannya apabila kanal mendukung. |
+| **Pemicu** | Jadwal pengingat pembayaran tercapai berdasarkan aturan yang telah disepakati. |
+| **Kondisi Awal** | Data kesediaan donasi dan jadwal telah tersimpan pada FR-004; kontak donatur dan kanal pengiriman tersedia serta penggunaannya telah disetujui. |
+| **Prioritas Usulan** | Should Have — usulan, perlu persetujuan Baitulmal Tazkia. |
+| **Tingkat Kesulitan Usulan** | 3 — Medium |
+| **Status** | Draft untuk review dan validasi; mekanisme pengingat manual/autodebit, waktu, frekuensi, dan kanal belum diputuskan. |
 
-### B. Deskripsi Functional Requirement
+---
 
-Apabila jadwal pengingat tercapai berdasarkan aturan yang disepakati, sistem menentukan jadwal pengingat, mengirim pesan kepada donatur melalui kanal yang disepakati, dan mencatat hasil pengiriman jika kanal mendukung. Apabila pengiriman gagal, sistem mencatat kegagalan tersebut sehingga dapat ditelusuri. Jumlah percobaan ulang dan eskalasi belum ditetapkan dan perlu dikonfirmasi.
+## B. Deskripsi Functional Requirement
 
-* **Pemicu:** Jadwal pengingat tercapai berdasarkan aturan yang disepakati.
-* **Kondisi awal:** Pengingat untuk pembayaran manual diputuskan masuk ruang lingkup dan kontak/kanal tersedia.
+Ketika jadwal pengingat tercapai berdasarkan aturan yang disepakati, sistem menyiapkan dan mengirim pesan pengingat kepada donatur melalui kanal komunikasi yang disetujui. Jika kanal menyediakan informasi hasil pengiriman, sistem mencatat hasil tersebut. Jika pengiriman gagal, sistem mencatat kegagalan agar dapat ditelusuri. Pengiriman pengingat tidak membuktikan bahwa pembayaran telah dilakukan dan tidak boleh mengubah status pembayaran menjadi berhasil.
 
-### C. Ruang Lingkup dan Batasan
-
-**Termasuk dalam FR-005:**
-* Menentukan jadwal pengingat pembayaran berdasarkan aturan yang disepakati.
-* Mengirim pesan pengingat kepada donatur melalui kanal yang disepakati.
-* Mencatat hasil pengiriman pengingat jika kanal mendukung.
-* Mencatat kegagalan pengiriman agar dapat ditelusuri.
-* Mencatat bahwa pembayaran belum terkonfirmasi apabila donatur belum membayar setelah pengingat.
-
-**Tidak termasuk dalam FR-005:**
-* Pemrosesan pembayaran atau penagihan melalui gateway (FR-006).
-* Verifikasi status transaksi (FR-007).
-* Notifikasi sebelum/sesudah penagihan (FR-013).
-* Penyimpanan kesediaan donasi dan jadwal (FR-004).
-* Jeda dan pembatalan donasi berulang.
-* Isi atau penjadwalan komunikasi berkala yang menurut SRS Bab 6 berada pada Kelompok 11.
-
-> **Batas penting:** FR-005 hanya membahas pengingat untuk pembayaran manual. Pengiriman pengingat tidak membuktikan pembayaran berhasil dan tidak dengan sendirinya mengubah status pembayaran.
-
-### D. Proses Bisnis
-
-*Kesediaan donasi dan jadwal telah tersimpan pada FR-004. Label dasar informasi dipertahankan agar jelas mana yang tertulis pada SRS dan mana yang masih perlu dikonfirmasi.*
-
-| No. | Aktor | Aktivitas | Dasar / Catatan |
-| :--- | :--- | :--- | :--- |
-| 1 | Sistem | Menentukan jadwal pengingat berdasarkan aturan yang disepakati. | Tertulis di SRS; tanggal, frekuensi, dan dasar perhitungan perlu konfirmasi. |
-| 2 | Sistem | Memastikan pengingat pembayaran manual masuk ruang lingkup dan kontak/kanal donatur tersedia. | Disimpulkan dari kondisi awal SRS; sumber kontak dan izin penggunaan perlu konfirmasi. |
-| 3 | Sistem | Mengirim pesan pengingat melalui kanal yang disepakati. | Tertulis di SRS; kanal, isi pesan, dan pengelola naskah perlu konfirmasi. |
-| 4 | Sistem | Mencatat hasil pengiriman jika kanal mendukung. | Tertulis di SRS; bentuk pencatatan perlu konfirmasi. |
-
-**Alur alternatif — pengiriman pengingat gagal:**
+### 1. Format Outline dan Batasan
+* Sistem menentukan waktu pengingat berdasarkan jadwal dan aturan yang disepakati.
+* Sistem memastikan data kontak dan kanal pengiriman tersedia serta dapat digunakan.
+* Sistem mengirim pesan pengingat kepada donatur melalui kanal yang disetujui.
+* Sistem mencatat hasil pengiriman apabila kanal mendukung informasi tersebut.
 * Sistem mencatat kegagalan pengiriman agar dapat ditelusuri.
-* Jumlah percobaan ulang, jeda antarpercobaan, dan eskalasi belum ditentukan.
-* Penanganan apabila kanal tidak mendukung pencatatan hasil pengiriman perlu dikonfirmasi.
+* Jika pembayaran belum terkonfirmasi setelah pengingat, sistem tidak menyatakan pembayaran berhasil.
 
-**Alur alternatif — donatur belum membayar setelah pengingat:**
-* Sistem mencatat bahwa pembayaran belum terkonfirmasi.
-* Sistem tidak menyatakan pembayaran berhasil hanya karena pengingat telah dikirim.
-* Aturan pengingat lanjutan, masa tunggu, dan dampaknya pada status donasi mengikuti keputusan bisnis yang belum dikonfirmasi.
+> **Batasan:** FR-005 hanya membahas pengingat pembayaran. Pengiriman permintaan pembayaran/penagihan melalui gateway termasuk FR-006; verifikasi status transaksi termasuk FR-007; notifikasi status donasi termasuk FR-013; penyimpanan kesediaan dan jadwal termasuk FR-004. Hubungan pengingat dengan mekanisme autodebit masih perlu diputuskan.
 
-### E. Field, Tipe Data, dan Validasi
+---
 
-*SRS Draft v0.2 belum menetapkan field, tipe data, maupun aturan validasi rinci untuk FR-005. Field berikut merupakan usulan untuk pembahasan, bukan nama kolom basis data atau keputusan final.*
+## C. Proses Bisnis
 
-| Field Usulan | Tujuan / Isi | Tipe Data | Validasi / Aturan |
+| Tahap | Aktor | Aktivitas | Dasar / Catatan |
+| :---: | :--- | :--- | :--- |
+| **1** | Sistem | Membaca jadwal donasi dan menentukan waktu pengingat. | Mengacu SRS; aturan tanggal dan frekuensi perlu konfirmasi. |
+| **2** | Sistem | Memastikan kontak donatur dan kanal pengiriman tersedia. | Kondisi awal; sumber kontak dan izin penggunaan perlu konfirmasi. |
+| **3** | Sistem | Mengirim pesan pengingat melalui kanal yang disetujui. | Mengacu SRS; kanal dan isi pesan belum ditetapkan. |
+| **4** | Sistem | Mencatat hasil pengiriman jika kanal mendukung. | Mengacu SRS; format catatan perlu konfirmasi. |
+| **5** | Sistem | Mencatat kegagalan pengiriman jika terjadi. | Mengacu kebutuhan keterlacakan; detail retry belum ditentukan. |
+
+> **Alur Alternatif:** Jika pengiriman gagal atau kanal tidak memberikan respons, sistem mencatat kondisi tersebut. Percobaan ulang, jeda antarpercobaan, dan eskalasi hanya dilakukan jika aturan tersebut telah disepakati. Jika donatur belum membayar, status pembayaran tetap belum terkonfirmasi sampai ada hasil yang diverifikasi melalui FR-007.
+
+---
+
+## D. Field, Tipe Data, dan Validasi
+
+| Field Usulan | Tujuan / Isi | Tipe Data | Validasi / Status |
 | :--- | :--- | :--- | :--- |
-| **Jadwal pengingat** | Tanggal/waktu atau aturan jadwal pengiriman. | Belum ditentukan. | Pengingat dikirim sesuai jadwal yang disetujui; tanggal dan frekuensi perlu konfirmasi (OQ-003). |
-| **Kanal pengiriman** | Media untuk mengirim pesan pengingat. | Belum ditentukan. | Hanya menggunakan kanal yang disetujui; kanal perlu konfirmasi (OQ-003). |
-| **Kontak donatur tujuan** | Alamat/nomor tujuan pengiriman. | Belum ditentukan. | Kontak dan kanal harus tersedia sebelum pengingat dikirim; sumber data dan izin perlu konfirmasi. |
-| **Isi pesan pengingat** | Naskah pesan yang dikirim kepada donatur. | Teks (usulan). | Isi, tautan/cara pembayaran, dan pengelola naskah perlu konfirmasi (OQ-008). |
-| **Hasil pengiriman** | Hasil proses pengiriman pesan. | Belum ditentukan. | Dicatat jika kanal mendukung; bentuk dan nilai status perlu konfirmasi. |
-| **Catatan kegagalan pengiriman** | Informasi untuk menelusuri kegagalan. | Belum ditentukan. | Kegagalan harus dapat ditelusuri; isi dan bentuk catatan perlu konfirmasi. |
-| **Percobaan ulang dan eskalasi** | Informasi percobaan ulang jika pengiriman gagal. | Belum ditentukan. | Jumlah, jeda, batas percobaan, dan eskalasi belum ditentukan. |
+| **Jadwal pengingat** | Waktu atau aturan pengiriman pesan. | Belum ditentukan | Mengikuti jadwal yang disetujui; waktu dan frekuensi perlu konfirmasi. |
+| **Kanal pengiriman** | Media pengiriman pesan. | Belum ditentukan | Hanya kanal yang disetujui; perlu konfirmasi. |
+| **Kontak tujuan** | Nomor/alamat tujuan donatur. | Belum ditentukan | Harus tersedia dan boleh digunakan untuk pengingat. |
+| **Isi pesan** | Teks pengingat yang dikirim. | Teks (usulan) | Isi pesan dan pengelolanya perlu disepakati. |
+| **Hasil pengiriman** | Informasi terkirim/gagal bila tersedia. | Belum ditentukan | Mengikuti kemampuan kanal. |
+| **Catatan kegagalan** | Informasi untuk menelusuri kegagalan. | Belum ditentukan | Kegagalan harus dapat ditelusuri; format perlu konfirmasi. |
 
-### F. UI Mockup
+---
 
-*FR-005 terutama berupa proses pengiriman pesan. Tampilan berikut adalah wireframe konseptual untuk bahan presentasi, bukan desain final. Kanal, redaksi pesan, dan tampilan pencatatan hasil harus dikonfirmasi. Arah visual awal: navy blue dan putih (SRS NFR-006), sejauh kanal mendukung.*
+## E. Mockup Konseptual
 
-**Contoh susunan pesan yang diterima donatur:**
-```text
-+-----------------------------------------------------------------------+
-| BAITULMAL TAZKIA — Pengingat Donasi Berulang                          |
-+-----------------------------------------------------------------------+
-| Identitas        : Baitulmal Tazkia                                   |
-| Sapaan / pesan   : [Sapaan dan kalimat pengingat — teks perlu         |
-|                    dikonfirmasi]                                      |
-| Nominal          : [Nominal donasi]                                   |
-| Periode / jadwal : [Jadwal donasi]                                    |
-| Peruntukan       : [Peruntukan donasi]                                |
-| Batas waktu      : [Batas waktu pembayaran — perlu dikonfirmasi]      |
-| Cara membayar    : [Cara atau tautan pembayaran — jika disepakati]    |
-+-----------------------------------------------------------------------+
-```
-*Catatan: contoh ini menggambarkan isi pesan, bukan tampilan aplikasi tertentu. Kanal (misalnya email, SMS, atau WhatsApp) belum diputuskan pada SRS.*
+*Contoh isi pengingat (bukan desain pesan final):*
 
-**Contoh tampilan internal untuk penelusuran hasil pengiriman:**
-```text
-+-----------------------------------------------------------------------+
-| BAITULMAL TAZKIA — Catatan Pengiriman Pengingat                       |
-+-----------------------------------------------------------------------+
-| Referensi pendaftaran : [ID / referensi]                              |
-| Jadwal pengingat      : [Tanggal / jadwal]                            |
-| Kanal                 : [Kanal pengiriman]                            |
-| Hasil pengiriman      : [Terkirim / gagal — nilai status perlu        |
-|                         dikonfirmasi]                                 |
-| Catatan kegagalan     : [Rincian kegagalan jika terjadi]              |
-+-----------------------------------------------------------------------+
-```
-*Catatan: pengguna yang dapat melihat catatan, bentuk pencatatan, dan nilai status masih perlu dikonfirmasi.*
+| Elemen Pesan | Contoh Isi |
+| :--- | :--- |
+| **Identitas pengirim** | Baitulmal Tazkia |
+| **Sapaan dan pengingat** | Pengingat jadwal donasi berulang Anda. |
+| **Nominal** | `[Nominal donasi — mengikuti data FR-003/FR-004]` |
+| **Jadwal / peruntukan** | `[Jadwal dan peruntukan donasi]` |
+| **Cara pembayaran** | `[Petunjuk atau tautan pembayaran — jika disepakati]` |
 
-### G. Non-Functional Requirement Terkait
+*Catatan: Kanal, redaksi, tautan pembayaran, dan waktu pengiriman belum ditetapkan. Mockup ini hanya membantu validasi kebutuhan.*
 
-| Aspek | Kebutuhan Awal | Catatan |
+---
+
+## F. Non-Functional Requirement Terkait
+
+| Aspek | Kebutuhan Terkait | Catatan |
 | :--- | :--- | :--- |
-| **Keamanan** | FR-005 tidak memproses atau menyimpan data pembayaran; perlindungan data donatur dan kontak mengikuti NFR-001 SRS. | Kebijakan, akses, dan retensi perlu klarifikasi (OQ-013). |
-| **Keandalan status** | Pengiriman pengingat dan kegagalannya tidak mengubah status pembayaran. Pembayaran tidak dinyatakan berhasil tanpa hasil terverifikasi. | Selaras dengan NFR-002 SRS dan ALT-03. |
-| **Keterlacakan** | Hasil pengiriman dan kegagalan pengiriman dapat ditelusuri. | Format referensi mengacu pada NFR-005 dan perlu disepakati. |
-| **Kinerja** | Pengingat dikirim sesuai jadwal yang disepakati. | Target ketepatan waktu belum ditetapkan (OQ-014). |
-| **Kemudahan penggunaan** | Isi pengingat jelas dan mudah dipahami donatur. | Mengacu pada NFR-004; kriteria uji perlu klarifikasi. |
+| **Keamanan** | Kontak dan data donatur dilindungi dari akses tidak berwenang. | NFR-001 SRS. |
+| **Keandalan** | Pengiriman pengingat tidak mengubah status pembayaran. | NFR-002 SRS. |
+| **Keterlacakan** | Hasil dan kegagalan pengiriman dapat ditelusuri bila didukung kanal. | NFR-005 dan NFR-007 SRS. |
+| **Kemudahan penggunaan** | Isi pesan mudah dipahami donatur. | NFR-004 SRS. |
 
-### H. Kriteria Penerimaan Awal
+---
 
-* [ ] Sistem menentukan jadwal pengingat berdasarkan aturan yang disepakati.
-* [ ] Pengingat hanya dikirim sesuai jadwal dan kanal yang disetujui.
-* [ ] Sistem mencatat hasil pengiriman jika kanal mendukung.
-* [ ] Jika pengiriman gagal, sistem mencatat kegagalan dan kegagalan dapat ditelusuri.
-* [ ] Pengiriman pengingat maupun kegagalannya tidak mengubah status pembayaran.
-* [ ] Jika donatur belum membayar setelah pengingat, pembayaran dicatat sebagai belum terkonfirmasi dan tidak dianggap berhasil hanya karena pesan telah dikirim.
+## G. Kriteria Penerimaan
+- [ ] Sistem menentukan pengingat berdasarkan jadwal dan aturan yang telah disepakati.
+- [ ] Pengingat hanya dikirim melalui kanal yang disetujui dan kepada kontak yang tersedia.
+- [ ] Sistem mencatat hasil pengiriman apabila kanal mendukung.
+- [ ] Jika pengiriman gagal, sistem mencatat kegagalan agar dapat ditelusuri.
+- [ ] Pengiriman pengingat tidak mengubah status pembayaran menjadi berhasil.
+- [ ] Pembayaran hanya dapat dinyatakan berhasil setelah status diverifikasi melalui proses FR-007.
 
-> *Kriteria penerimaan masih bersifat awal dan harus diperbarui setelah aturan bisnis dikonfirmasi.*
+*Catatan: Kriteria penerimaan ini masih perlu disesuaikan setelah mekanisme pengingat dan kanal komunikasi disepakati.*
 
-### I. Hal yang Perlu Dikonfirmasi
+---
 
-| No. | Pertanyaan / Keputusan | Status |
+## H. Prioritas dan Tingkat Kesulitan
+
+| Komponen | Usulan | Dasar |
 | :--- | :--- | :--- |
-| 1 | Apakah pengingat pembayaran manual masuk ruang lingkup versi ini? Apakah pengingat menggantikan autodebit, berjalan bersama autodebit, atau hanya untuk metode tertentu? (OQ-001) | Belum dikonfirmasi |
-| 2 | Kapan tanggal pengingat ditetapkan, berapa frekuensinya, dan kanal apa yang digunakan? (OQ-003) | Belum dikonfirmasi |
-| 3 | Dari mana kontak donatur diperoleh, dan izin apa yang harus dipenuhi sebelum pengingat dikirim? | Belum dikonfirmasi |
-| 4 | Siapa yang mengelola isi pesan dan penjadwalan: subsistem ini atau Kelompok 11 (Hubungan Donatur dan Komunikasi)? (OQ-008) | Belum dikonfirmasi |
-| 5 | Apa isi pesan pengingat, dan apakah pesan memuat tautan atau cara pembayaran? | Belum dikonfirmasi |
-| 6 | Bagaimana hasil pengiriman dicatat, dan bagaimana jika kanal tidak mendukung pencatatan hasil? | Belum dikonfirmasi |
-| 7 | Apakah pengiriman gagal dicoba ulang? Berapa jeda dan batas percobaannya, serta bagaimana eskalasinya? | Belum dikonfirmasi |
-| 8 | Jika donatur tidak membayar setelah pengingat, berapa masa tunggu, apakah ada pengingat lanjutan, dan apa dampaknya pada status donasi? | Belum dikonfirmasi |
-| 9 | Apa hubungan FR-005 dengan FR-013 (notifikasi sebelum/sesudah penagihan): satu fungsi atau dua fungsi terpisah? | Belum dikonfirmasi |
-| 10 | Apakah pengingat dihentikan ketika donatur menjeda atau membatalkan donasi (FR-011 dan FR-012), dan sejak kapan? (OQ-012) | Belum dikonfirmasi |
+| **Prioritas MoSCoW** | Should Have — usulan | Pengingat tercantum sebagai kebutuhan pada SRS, tetapi penerapannya bergantung pada keputusan apakah pembayaran dilakukan manual, autodebit, atau kombinasi. |
+| **Tingkat kesulitan** | 3 — Medium | Melibatkan penjadwalan, pengiriman melalui kanal eksternal, dan pencatatan hasil/kegagalan. Kompleksitas bergantung pada kanal dan aturan retry. |
 
-### J. Catatan untuk Presentasi
+### Dasar Pertimbangan Penilaian
+Skala kesulitan 1–5: **1–2 Easy**, **3 Medium**, dan **4–5 Hard**. FR-005 diusulkan pada tingkat **3 (Medium)** karena memerlukan pengaturan jadwal, pengiriman pesan, serta pencatatan hasil. Prioritas *Should Have* merupakan usulan sementara karena ruang lingkup pengingat manual dan hubungannya dengan autodebit masih perlu keputusan klien. Penilaian ini bukan persetujuan final.
 
-* FR-005 menjelaskan pengiriman pengingat pembayaran kepada donatur setelah kesediaan donasi dan jadwal tersimpan pada FR-004.
-* Ketika jadwal pengingat tercapai, sistem mengirim pesan melalui kanal yang disepakati dan mencatat hasil pengiriman jika kanal mendukung.
-* FR-005 hanya membahas pengingat pembayaran manual; pemrosesan pembayaran/gateway dan verifikasi transaksi berada pada FR lain.
-* Pengiriman pengingat bukan bukti pembayaran berhasil. Status pembayaran harus menunggu hasil terverifikasi.
-* Hubungan pengingat manual dengan autodebit, waktu, frekuensi, kanal, isi pesan, dan percobaan ulang masih perlu keputusan.
-* Dokumen ini dirapikan untuk bahan presentasi; belum menjadi baseline kebutuhan dan belum disetujui klien.
+---
 
-*— Akhir Dokumen FR-005 —*
+## I. Hal yang Perlu Dikonfirmasi kepada Klien
+1. Apakah pengingat pembayaran manual digunakan, atau pengingat berjalan bersama mekanisme autodebit?
+2. Kapan pengingat dikirim dan berapa frekuensinya sebelum atau setelah tanggal pembayaran?
+3. Kanal apa yang digunakan (misalnya WhatsApp, email, atau SMS), dan siapa penyedia/pengelolanya?
+4. Dari mana data kontak donatur diperoleh dan bagaimana persetujuan penggunaan kontak dicatat?
+5. Siapa yang menyusun dan menyetujui isi pesan pengingat?
+6. Apakah pesan memuat tautan atau petunjuk pembayaran? Jika ya, siapa yang membuat tautan tersebut?
+7. Bagaimana hasil pengiriman dicatat dan apa yang dilakukan jika pengiriman gagal?
+8. Apakah ada percobaan ulang, berapa batas dan jedanya?
+9. Bagaimana batas fungsi FR-005 dengan FR-013 (pemberitahuan status donasi)?
+10. Apakah pengingat otomatis dihentikan ketika donasi dijeda atau dibatalkan melalui FR-011/FR-012?
+
+---
+
+## J. Checklist Konfirmasi Client
+
+| ID & Nama Kebutuhan | Prioritas Usulan | Kesulitan Usulan | Tidak Dibutuhkan / Catatan Client |
+| :--- | :--- | :--- | :--- |
+| **FR-005 — Mengirim Pengingat Pembayaran** | Should Have — usulan | 3 — Medium | |
+
+---
+
+## K. Catatan dan Status Dokumen
+FR-005 berada setelah penyimpanan kesediaan donasi dan jadwal pada FR-004. Dokumen ini diselaraskan dengan SRS/BRS Fitur 4 versi 1.0 tanggal 14 November 2026. Mekanisme pengingat manual atau autodebit, waktu, frekuensi, kanal, isi pesan, dan retry belum ditetapkan sehingga harus divalidasi bersama klien.  
+**Status dokumen:** Draft untuk Review dan Validasi Klien; belum menjadi baseline sebelum disetujui.

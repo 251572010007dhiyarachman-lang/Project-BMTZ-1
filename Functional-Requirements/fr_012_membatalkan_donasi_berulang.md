@@ -1,152 +1,160 @@
-# FUNCTIONAL REQUIREMENT
+# BAITULMAL TAZKIA
+## SISTEM DONASI BERULANG DAN KANAL PEMBAYARAN DIGITAL
 
-## FR-012 — MEMBATALKAN DONASI BERULANG
+### FUNCTIONAL REQUIREMENT (FR)
+# FR-012: MEMBATALKAN DONASI BERULANG
 
-**Sistem Donasi Berulang dan Kanal Pembayaran Digital**
+**Versi:** 1.0 | **Status:** Draft untuk Review dan Validasi Klien | **Tanggal:** 25 November 2026  
+**Acuan:** SRS dan BRS Fitur 4 versi 1.0, tanggal acuan 14 November 2026.
 
-| Informasi Dokumen | Keterangan |
+---
+
+## A. Identitas Kebutuhan
+
+| Informasi | Keterangan |
 | :--- | :--- |
-| **Organisasi** | Baitulmal Tazkia |
 | **ID Kebutuhan** | FR-012 |
-| **Versi Dokumen** | 1.0 |
-| **Tanggal acuan** | 26 Oktober 2026 (SRS Draft v0.2) |
-| **Status** | Dokumen finalisasi kebutuhan; persetujuan aturan bisnis masih diperlukan |
-| **Prioritas** | Belum ditetapkan dalam SRS Draft v0.2 |
+| **Nama Kebutuhan** | Membatalkan Donasi Berulang |
+| **Aktor Utama** | Donatur; staf internal Baitulmal Tazkia atau pihak berwenang sesuai hak akses; Sistem Fitur 4. |
+| **Tujuan** | Memungkinkan pembatalan kesediaan donasi berulang sesuai ketentuan yang ditetapkan organisasi dan mencatat perubahan statusnya. |
+| **Pemicu** | Donatur atau pihak berwenang mengajukan pembatalan atas kesediaan donasi berulang. |
+| **Kondisi Awal** | Data kesediaan donasi tersedia dan dapat diidentifikasi; pengguna memiliki hak untuk melakukan pembatalan. |
+| **Prioritas Usulan** | Should Have — usulan, mengikuti BR-008 yang berprioritas Sedang; perlu persetujuan klien. |
+| **Tingkat Kesulitan Usulan** | 3 — Medium |
+| **Status** | Draft untuk review dan validasi; sifat pembatalan, waktu efektif, dampak terhadap transaksi berjalan, dan konsekuensi pada gateway belum ditetapkan. |
 
-### 1. Identitas dan Tujuan Kebutuhan
+---
 
-| Elemen | Uraian |
-| :--- | :--- |
-| **Nama kebutuhan** | Membatalkan Donasi Berulang |
-| **Aktor utama** | Donatur dan sistem |
-| **Tujuan** | Memungkinkan donatur membatalkan kesediaan donasi berulang sehingga tidak ada penjadwalan baru setelah pembatalan efektif. Transaksi yang telah berjalan ditangani secara terpisah. |
-| **Pemicu** | Donatur memilih tindakan pembatalan donasi berulang. |
-| **Kondisi awal** | Fitur pengelolaan donasi berulang dan autentikasi donatur tersedia. Donasi berulang telah terdaftar melalui FR-004. |
-| **Batasan** | FR-012 hanya mencakup pembatalan kesediaan donasi berulang. Jeda donasi dibahas pada FR-011; pendaftaran kesediaan dan jadwal awal pada FR-004; pemrosesan penagihan pada FR-006; pengingat/notifikasi pada FR-005 dan FR-013. Pengembalian dana tidak termasuk dalam FR-012. |
+## B. Deskripsi Functional Requirement
 
-### 2. Deskripsi Functional Requirement
+Sistem memungkinkan donatur atau pihak berwenang membatalkan kesediaan donasi berulang sesuai ketentuan yang berlaku. Ketika permintaan pembatalan diajukan, sistem memeriksa kesediaan donasi yang dipilih dan kewenangan pengguna. Jika memenuhi ketentuan, sistem memperbarui status kesediaan menjadi dibatalkan dan menyimpan informasi perubahan untuk keperluan penelusuran. Pembatalan mengatur keberlanjutan kesediaan donasi berulang; perlakuan terhadap transaksi yang telah dibuat, sedang diproses, atau telah berhasil mengikuti kebijakan organisasi dan ketentuan layanan pembayaran yang perlu dikonfirmasi.
 
-Sistem harus memungkinkan donatur mengajukan pembatalan donasi berulang. Sistem harus memvalidasi permintaan sebelum memperbarui status kesediaan atau jadwal donasi sesuai aturan bisnis yang disepakati. Apabila tagihan sedang diproses ketika permintaan pembatalan diajukan, sistem harus menerapkan aturan yang disepakati dan menampilkan statusnya dengan jelas. Sistem tidak boleh menjanjikan bahwa transaksi yang sudah berjalan pasti dapat dihentikan. Setelah pembatalan efektif, sistem tidak boleh membuat penjadwalan donasi baru sesuai aturan yang disepakati.
+* **Pemicu:** Permintaan pembatalan kesediaan donasi berulang.
+* **Kondisi Awal:** Kesediaan tersedia dan pengguna berwenang.
+* **Hasil yang Diharapkan:** Status pembatalan tercatat dan dapat ditelusuri.
 
-### 3. Proses Bisnis
+### B.1 Batasan Ruang Lingkup
+* FR-012 membahas pembatalan kesediaan donasi berulang, bukan pengembalian dana atas transaksi yang telah berhasil.
+* Menjeda donasi sementara dibahas pada FR-011 dan tidak sama dengan pembatalan.
+* Pengaturan kesediaan awal berada pada FR-003/FR-004; pemberitahuan perubahan status, apabila disetujui, berkaitan dengan FR-013.
+* FR-012 tidak mengasumsikan adanya autodebit atau pembatalan otomatis pada Payment Gateway Artivisi sebelum dukungan dan prosedurnya dikonfirmasi.
+* Transaksi yang telah berhasil, *pending*, atau sedang diproses tidak otomatis dihapus atau dibatalkan oleh perubahan status kesediaan.
 
-**Aktor:** Donatur dan sistem. *(Prasyarat: donasi berulang telah terdaftar melalui FR-004).*
+---
 
-| No. | Aktivitas | Dasar / Status |
+## C. Proses Bisnis
+
+| Tahap | Aktor | Aktivitas | Dasar / Catatan |
+| :---: | :--- | :--- | :--- |
+| **1** | Donatur / pihak berwenang | Memilih kesediaan donasi berulang yang akan dibatalkan. | Pengelolaan kesediaan tercantum pada SRS/BRS; tampilan dan akses perlu konfirmasi. |
+| **2** | Sistem Fitur 4 | Memeriksa keberadaan kesediaan dan hak akses pengguna. | Penjabaran kebutuhan keamanan; aturan peran perlu konfirmasi. |
+| **3** | Donatur / pihak berwenang | Mengonfirmasi permintaan pembatalan sesuai mekanisme yang disediakan. | Konfirmasi dan kemungkinan alasan pembatalan perlu konfirmasi. |
+| **4** | Sistem Fitur 4 | Memvalidasi bahwa kesediaan memenuhi ketentuan pembatalan. | Ketentuan pembatalan ditetapkan organisasi. |
+| **5** | Sistem Fitur 4 | Memperbarui status kesediaan menjadi dibatalkan. | Sesuai FR-012; nama status dan sifat final perlu konfirmasi. |
+| **6** | Sistem Fitur 4 | Menyimpan waktu dan pelaku perubahan serta referensi kesediaan. | Usulan keterlacakan; format data perlu konfirmasi. |
+| **7** | Sistem Fitur 4 / pihak terkait | Menerapkan dampak pembatalan pada jadwal berikutnya dan proses pembayaran sesuai aturan yang disepakati. | Waktu efektif dan mekanisme gateway belum ditetapkan. |
+
+### C.1 Alur Alternatif dan Kondisi Khusus
+* **Kesediaan tidak ditemukan atau tidak dapat diakses:** Sistem tidak mengubah status dan memberikan informasi yang sesuai.
+* **Pengguna tidak memiliki kewenangan:** Pembatalan ditolak dan status kesediaan tetap.
+* **Kesediaan sudah dibatalkan:** Sistem tidak mengulang perubahan yang tidak diperlukan dan memberikan informasi sesuai aturan.
+* **Terdapat transaksi yang sedang diproses atau berstatus pending:** Sistem mempertahankan catatan transaksi dan menerapkan perlakuan sesuai kebijakan yang dikonfirmasi.
+* **Transaksi telah berhasil sebelum pembatalan:** Pembatalan kesediaan tidak otomatis membatalkan transaksi atau memicu pengembalian dana.
+* **Permintaan pembatalan gagal disimpan:** Status sebelumnya dipertahankan dan kegagalan dicatat.
+
+---
+
+## D. Data, Tipe Data, dan Validasi
+
+| Elemen Data Usulan | Tujuan / Validasi Awal | Status |
 | :--- | :--- | :--- |
-| 1 | Donatur memilih tindakan pembatalan pada donasi berulang. | Tertulis di SRS |
-| 2 | Sistem memastikan fitur tersedia dan donatur telah melalui mekanisme autentikasi yang berlaku. | Kondisi awal SRS; mekanisme perlu dikonfirmasi |
-| 3 | Sistem memvalidasi permintaan pembatalan dan kewenangan donatur atas donasi tersebut. | Tertulis di SRS; detail validasi perlu dikonfirmasi |
-| 4 | Jika valid, sistem memperbarui status kesediaan atau jadwal sesuai aturan pembatalan yang disepakati. | Tertulis di SRS; aturan efektif perlu dikonfirmasi |
-| 5 | Setelah pembatalan efektif, sistem tidak membuat penjadwalan baru untuk donasi tersebut. | Kriteria penerimaan SRS |
-| 6 | Sistem mencatat status pembatalan dan waktu berlakunya agar dapat ditelusuri. | Disimpulkan dari NFR-005 dan ALT-07; detail pencatatan perlu dikonfirmasi |
+| **ID kesediaan donasi** | Mengidentifikasi kesediaan donasi yang dibatalkan. | Wajib tersedia; format perlu konfirmasi. |
+| **ID donatur** | Memastikan kesediaan terkait dengan pemiliknya. | Penggunaan dan format perlu konfirmasi. |
+| **Status kesediaan** | Membedakan aktif, dijeda, dan dibatalkan. | Daftar nilai/status final perlu konfirmasi. |
+| **Waktu permintaan pembatalan** | Mencatat kapan pembatalan diajukan. | Format dan zona waktu perlu konfirmasi. |
+| **Waktu efektif pembatalan** | Menentukan kapan pembatalan mulai berlaku. | Aturan penetapan perlu konfirmasi. |
+| **Pelaku perubahan** | Mencatat donatur atau staf/pihak berwenang yang melakukan tindakan. | Kebutuhan audit dan format perlu konfirmasi. |
+| **Alasan pembatalan** | Informasi tambahan jika organisasi mewajibkan alasan. | Opsional/wajib dan daftar alasan perlu konfirmasi. |
+| **Referensi transaksi terkait** | Membantu mengidentifikasi transaksi yang sudah dibuat/berjalan sebelum pembatalan. | Cakupan dan relasi data perlu konfirmasi. |
 
-#### 3.1 Alur Alternatif: Tagihan Sedang Diproses
+*Catatan: Elemen di atas merupakan usulan kebutuhan informasi, bukan skema basis data final.*
 
-* Sistem memeriksa status tagihan dan menerapkan aturan efektif pembatalan yang telah disepakati.
-* Sistem menampilkan status tagihan atau hasil penanganannya secara jelas kepada donatur.
-* Sistem tidak menjanjikan bahwa transaksi yang sudah berjalan pasti dapat dihentikan.
-* Transaksi yang telah berjalan ditangani terpisah dari pembatalan kesediaan donasi berulang.
+---
 
-> *Catatan: Waktu efektif pembatalan dan dampaknya terhadap tagihan yang sedang berjalan masih memerlukan keputusan bisnis (SRS OQ-012).*
+## E. Mockup Konseptual
 
-#### 3.2 Alur Alternatif: Validasi Gagal atau Donasi Tidak Dapat Dibatalkan
+*SRS tidak menetapkan desain layar khusus untuk FR-012. Gambaran konseptual pada halaman pengelolaan donasi berulang dapat memuat:*
 
-* Sistem tidak mengubah status kesediaan maupun jadwal donasi apabila permintaan tidak lolos validasi atau donasi tidak memenuhi ketentuan pembatalan.
-* Sistem menampilkan informasi kegagalan atau alasan donasi tidak dapat dibatalkan sesuai pesan dan aturan yang nantinya disetujui.
-
-> *Catatan: Daftar kondisi yang menyebabkan pembatalan ditolak serta redaksi pesan kepada donatur perlu dikonfirmasi.*
-
-### 4. Data dan Validasi
-
-*SRS Draft v0.2 belum menetapkan nama field teknis, tipe data, maupun aturan validasi rinci untuk FR-012. Daftar berikut merupakan kebutuhan data konseptual untuk dibahas, bukan keputusan skema basis data.*
-
-| Data yang Diperlukan | Kegunaan / Validasi | Status |
-| :--- | :--- | :--- |
-| **Referensi donasi berulang** | Mengidentifikasi donasi yang diminta untuk dibatalkan dan memastikan donasi tersebut berada dalam cakupan kewenangan donatur. | Format dan sumber referensi perlu dikonfirmasi |
-| **Identitas dan hak akses donatur** | Memastikan permintaan berasal dari donatur yang berhak sebelum status diubah. | Mekanisme autentikasi/otorisasi perlu dikonfirmasi |
-| **Permintaan pembatalan** | Menjadi dasar pemrosesan sesuai aturan efektif pembatalan. | Aturan dan tahapan konfirmasi perlu dikonfirmasi |
-| **Status kesediaan donasi** | Mencerminkan status donasi berulang, termasuk status batal sesuai daftar status yang disepakati. | Daftar status dan transisi perlu dikonfirmasi |
-| **Waktu efektif pembatalan** | Menentukan sejak kapan sistem menghentikan penjadwalan baru. | Aturan penentuan waktu perlu dikonfirmasi |
-| **Status transaksi berjalan** | Memisahkan status pembatalan kesediaan dari status pembayaran yang sedang atau telah diproses. | Cara penanganan dan integrasi perlu dikonfirmasi |
-| **Alasan pembatalan** | Dicatat hanya apabila organisasi menetapkan bahwa data ini diperlukan. | Kebutuhan pencatatan belum ditetapkan SRS |
-
-### 5. Rancangan Antarmuka (UI)
-
-*Rancangan berikut adalah gambaran elemen fungsional, bukan desain visual final. Tampilan mengikuti arahan awal SRS NFR-006: navy blue dan putih, serta identitas resmi Baitulmal Tazkia.*
-
-#### 5.1 Kondisi Donatur Mengajukan Pembatalan
-
-| Elemen UI | Isi / Perilaku |
+| Elemen Tampilan | Keterangan |
 | :--- | :--- |
-| **Identitas halaman** | Kelola Donasi Berulang |
-| **Informasi donasi** | Referensi donasi, nominal, jadwal, peruntukan, dan status donasi |
-| **Aksi** | Tombol “Batalkan donasi” ditampilkan sesuai status dan ketentuan donasi yang dapat dibatalkan. |
-| **Konfirmasi** | Sistem meminta konfirmasi pembatalan sesuai aturan yang telah disetujui. Teks konfirmasi belum ditetapkan. |
+| **Informasi kesediaan** | Program, nominal, jadwal, periode, dan status donasi berulang. |
+| **Tindakan pembatalan** | Pilihan untuk mengajukan pembatalan pada kesediaan yang memenuhi syarat. |
+| **Konfirmasi pembatalan** | Ringkasan kesediaan yang akan dibatalkan dan informasi dampaknya sesuai kebijakan. |
+| **Status terbaru** | Informasi bahwa kesediaan telah dibatalkan atau permintaan gagal. |
 
-#### 5.2 Kondisi Hasil Permintaan
+*Catatan: Tampilan, istilah status, dan apakah pembatalan dapat dilakukan mandiri oleh donatur atau harus melalui staf perlu dikonfirmasi. Jika dibuat antarmuka, arahan visual SRS adalah navy blue dan putih.*
 
-| Kondisi | Informasi yang Ditampilkan |
-| :--- | :--- |
-| **Pembatalan diterima** | Status pembatalan dan waktu mulai berlakunya. Sistem menjelaskan bahwa tidak ada penjadwalan baru setelah pembatalan efektif. |
-| **Tagihan sedang diproses** | Status tagihan dan informasi penanganan sesuai aturan efektif yang berlaku. Transaksi yang telah berjalan ditangani terpisah. |
-| **Permintaan ditolak / tidak valid** | Informasi bahwa pembatalan tidak dapat diproses; status dan jadwal donasi tidak berubah. |
+---
 
-### 6. Non-Functional Requirement Terkait
+## F. Non-Functional Requirement Terkait
 
-| Aspek | Kebutuhan Terkait FR-012 | Acuan |
+| Aspek | Kebutuhan Terkait | Acuan / Catatan |
 | :--- | :--- | :--- |
-| **Keamanan** | Hanya donatur yang berhak dapat mengajukan pembatalan. Permintaan divalidasi sebelum status diubah; data donatur dilindungi sesuai kebijakan yang disepakati. | NFR-001; OQ-013 |
-| **Keandalan status** | Tidak ada penjadwalan baru setelah pembatalan efektif. Sistem tidak menjanjikan transaksi yang telah diproses dapat dihentikan dan tidak mengubah status pembayaran yang sudah ditetapkan. | NFR-002; ALT-07 |
-| **Keterlacakan** | Status pembatalan dan waktu berlakunya dapat ditelusuri. | NFR-005 |
-| **Kemudahan penggunaan** | Instruksi pembatalan dan status tagihan yang sedang diproses ditampilkan dengan jelas. | NFR-004 |
-| **Tampilan** | Antarmuka mengikuti arahan awal warna navy blue dan putih serta identitas organisasi. | NFR-006 |
-| **Integrasi** | Status batal yang diperlukan oleh kelompok 11 disediakan melalui kontrak integrasi yang disepakati. | NFR-003; OQ-008 |
+| **Keamanan dan hak akses** | Hanya donatur pemilik kesediaan atau pihak berwenang yang dapat mengajukan pembatalan. | NFR-001; autentikasi dan matriks peran perlu konfirmasi. |
+| **Konsistensi data** | Status pembatalan harus konsisten dan tidak menghapus riwayat transaksi. | NFR-005; aturan retensi dan relasi data perlu disepakati. |
+| **Keterlacakan** | Pembatalan dapat ditelusuri berdasarkan ID kesediaan, waktu, dan pelaku perubahan. | NFR-005; detail audit log perlu konfirmasi. |
+| **Keandalan transaksi** | Pembatalan kesediaan tidak boleh mengubah transaksi menjadi gagal atau membatalkan transaksi berhasil tanpa proses yang sah. | NFR-002; aturan transaksi berjalan perlu konfirmasi. |
 
-### 7. Kriteria Penerimaan
+---
 
-* [ ] Sistem menerima permintaan pembatalan dari donatur melalui fitur pengelolaan donasi berulang.
-* [ ] Sistem memvalidasi permintaan sebelum mengubah status kesediaan atau jadwal donasi.
-* [ ] Permintaan yang tidak lolos validasi tidak mengubah status maupun jadwal donasi.
-* [ ] Setelah pembatalan efektif, sistem tidak membuat penjadwalan baru untuk donasi tersebut.
-* [ ] Transaksi yang telah berjalan ditangani terpisah dari pembatalan kesediaan donasi berulang.
-* [ ] Jika tagihan sedang diproses, sistem menerapkan aturan yang disepakati dan menampilkan statusnya dengan jelas.
-* [ ] Sistem tidak menyatakan atau menjanjikan bahwa transaksi yang sudah berjalan pasti dapat dihentikan.
-* [ ] Status pembatalan dan waktu efektifnya dapat ditelusuri sesuai kebijakan pencatatan yang disepakati.
+## G. Kriteria Penerimaan
+- [ ] Donatur atau pihak berwenang dapat memilih kesediaan donasi berulang yang valid untuk dibatalkan.
+- [ ] Sistem memvalidasi hak akses dan ketentuan pembatalan sebelum mengubah status.
+- [ ] Sistem memperbarui status kesediaan menjadi dibatalkan dan menyimpan waktu serta pelaku perubahan.
+- [ ] Riwayat transaksi yang telah terjadi tetap dapat ditelusuri.
+- [ ] Kesediaan yang tidak ditemukan, tidak dapat diakses, atau sudah dibatalkan tidak diubah secara keliru.
+- [ ] Dampak pembatalan terhadap jadwal berikutnya dan transaksi yang sedang diproses mengikuti kebijakan yang telah disetujui.
+- [ ] Pembatalan kesediaan tidak otomatis diperlakukan sebagai pengembalian dana transaksi yang telah berhasil.
 
-> *Catatan: Kriteria yang bergantung pada aturan efektif, status transaksi, autentikasi, dan pencatatan hanya dapat diuji secara final setelah keputusan bisnis terkait disepakati.*
+*Catatan: Kriteria penerimaan final bergantung pada keputusan mengenai sifat pembatalan, waktu efektif, dan perlakuan terhadap transaksi berjalan.*
 
-### 8. Keputusan Bisnis yang Masih Memerlukan Konfirmasi
+---
 
-*Butir berikut merupakan keputusan terbuka yang tidak ditetapkan oleh SRS Draft v0.2. Butir ini harus disepakati oleh Baitulmal Tazkia sebelum FR-012 dinyatakan disetujui untuk implementasi.*
+## H. Prioritas dan Tingkat Kesulitan
 
-1. Bagaimana pembatalan berlaku apabila penagihan sedang diproses, dan apa dampaknya terhadap tagihan yang berjalan? (OQ-012; ALT-07)
-2. Kapan pembatalan mulai efektif: segera, pada akhir periode berjalan, atau berdasarkan batas waktu sebelum tanggal penagihan? (OQ-003)
-3. Status donasi apa yang dapat dibatalkan? Apakah donasi yang sedang dijeda (FR-011) juga dapat dibatalkan?
-4. Apakah pembatalan bersifat final, atau donatur dapat mendaftar ulang/mengaktifkan kembali donasi?
-5. Bagaimana autentikasi dan validasi hak donatur dilakukan? Apakah konfirmasi ulang diwajibkan?
-6. Apakah pengingat dan penagihan terjadwal yang sudah ada dihentikan setelah pembatalan efektif? (FR-005, FR-006, FR-013)
-7. Apakah pembatalan perlu diteruskan ke Payment Gateway Artivisi untuk metode yang mendukung penagihan otomatis, termasuk pencabutan persetujuan? (OQ-001, OQ-002)
-8. Apakah penghentian kesediaan akibat kegagalan tagihan berulang termasuk ruang lingkup FR-012, atau merupakan proses terpisah? (OQ-004)
-9. Status apa yang dibutuhkan kelompok 11 dan kapan status batal disinkronkan? (OQ-008)
-10. Apakah donatur menerima konfirmasi pembatalan, siapa pengirimnya, dan apakah alasan pembatalan perlu dicatat?
-11. Apakah staf internal dapat membatalkan donasi atas permintaan donatur?
-12. Bagaimana aturan akses, retensi, kepemilikan riwayat pembatalan, dan target waktu respons ditetapkan? (OQ-013, OQ-014)
+| Komponen | Usulan | Dasar |
+| :--- | :--- | :--- |
+| **Prioritas MoSCoW** | Should Have — usulan | BR-008 pada BRS memiliki prioritas Sedang dan menggabungkan kebutuhan jeda atau pembatalan donasi berulang; perlu persetujuan klien. |
+| **Tingkat Kesulitan** | 3 — Medium | Melibatkan validasi hak akses, perubahan status, penyimpanan riwayat, dan pengaturan dampak pada jadwal/transaksi berikutnya. |
 
-### 9. Batasan dan Ketergantungan
+### Dasar Pertimbangan Penilaian
+Skala kesulitan 1–5: **1–2 Easy**, **3 Medium**, dan **4–5 Hard**. FR-012 diusulkan pada tingkat **3 (Medium)** karena proses utamanya berupa validasi dan perubahan status kesediaan. Kompleksitas dapat meningkat jika pembatalan harus disinkronkan dengan layanan pembayaran atau mengubah tagihan yang sudah dibuat. Prioritas dan tingkat kesulitan ini merupakan usulan, bukan persetujuan final klien.
 
-* **FR-004:** Pendaftaran kesediaan donasi berulang dan penyimpanan jadwal awal.
-* **FR-005 dan FR-013:** Pengingat serta notifikasi.
-* **FR-006:** Pemrosesan penagihan melalui *payment gateway*.
-* **FR-011:** Jeda donasi berulang.
-* **NFR-001 sampai NFR-006:** Keamanan, keandalan, integrasi, kemudahan penggunaan, keterlacakan, dan tampilan.
-* **Kelompok 11:** Penerimaan/sinkronisasi status batal melalui kontrak integrasi yang disepakati.
+---
 
-### 10. Ringkasan untuk Validasi
+## I. Hal yang Perlu Dikonfirmasi kepada Klien
+1. Siapa yang boleh membatalkan donasi berulang: donatur sendiri, staf, atau keduanya?
+2. Apakah pembatalan berlaku langsung atau pada periode/tagihan berikutnya?
+3. Apakah pembatalan bersifat permanen, atau donatur dapat membuat kesediaan baru setelahnya?
+4. Apa yang terjadi pada tagihan yang sudah dibuat, sedang diproses, atau berstatus *pending* ketika pembatalan dilakukan?
+5. Apakah pembatalan perlu diteruskan ke Payment Gateway Artivisi untuk menghentikan instruksi/mandat pembayaran berikutnya?
+6. Apakah alasan pembatalan wajib dicatat?
+7. Apakah transaksi yang sudah berhasil tetap tercatat dan tidak berubah ketika kesediaan dibatalkan?
+8. Apakah pembatalan memicu pemberitahuan kepada donatur melalui FR-013?
+9. Apakah staf memerlukan riwayat pembatalan dan kewenangan untuk melakukan pembatalan atas nama donatur?
 
-* FR-012 menetapkan fungsi pembatalan donasi berulang oleh donatur. Hasil utama yang wajib dijaga adalah: (1) permintaan divalidasi sebelum status diubah; (2) setelah pembatalan efektif tidak ada penjadwalan baru; (3) transaksi yang telah berjalan ditangani secara terpisah; dan (4) sistem menampilkan status tagihan yang sedang diproses secara jelas tanpa menjanjikan bahwa transaksi tersebut pasti dapat dihentikan.
-* Dokumen ini telah disusun sebagai versi finalisasi kebutuhan berdasarkan informasi yang tersedia pada SRS Draft v0.2. Dokumen belum dapat dianggap sebagai persetujuan final klien untuk aturan bisnis yang tercantum pada Bagian 8.
+---
 
-### 11. Referensi
+## J. Checklist Konfirmasi Client
 
-SRS Draft v0.2: Bab 2.3; Bab 3.2 (ALT-07); Bab 4 (FR-012: pemicu, kondisi awal, alur utama, alur alternatif, dan kriteria penerimaan); NFR-001, NFR-002, NFR-003, NFR-004, NFR-005, NFR-006; serta OQ-001, OQ-002, OQ-003, OQ-004, OQ-008, OQ-012, OQ-013, dan OQ-014.
+| ID & Nama Kebutuhan | Prioritas Usulan | Kesulitan Usulan | Tidak Dibutuhkan / Catatan Client |
+| :--- | :--- | :--- | :--- |
+| **FR-012 — Membatalkan Donasi Berulang** | Should Have — usulan | 3 — Medium | |
+
+*Catatan: Isi kolom terakhir apabila kebutuhan tidak diperlukan atau terdapat catatan/perubahan dari klien. Biarkan kosong jika kebutuhan tetap diperlukan.*
+
+---
+
+## K. Catatan dan Status Dokumen
+FR-012 diturunkan dari kebutuhan SRS untuk memungkinkan pembatalan kesediaan donasi berulang sesuai ketentuan yang berlaku, serta BR-008 pada BRS. Dokumen ini membedakan pembatalan kesediaan dari jeda sementara dan pengembalian dana. Sifat pembatalan, waktu efektif, pihak yang berwenang, serta dampaknya terhadap transaksi berjalan dan layanan pembayaran masih memerlukan validasi.  
+**Status:** Draft untuk Review dan Validasi Klien; belum menjadi baseline sebelum disetujui.
